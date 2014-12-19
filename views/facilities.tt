@@ -1,0 +1,157 @@
+[% INCLUDE header.tt %]
+
+  <div data-role=="content">
+        <form id="form-facility-1">
+        [%- IF facilities.size %]
+            <!--<fieldset data-role="controlgroup" data-iconpos="right">-->
+            <!--<legend>Manual Override:</legend>-->
+            [%- FOREACH facility IN facilities %]
+            <div data-role="collapsible" id="collapse-[% facility.id %]">
+                <h1 id="head-[% facility.id %]">[% facility.name %]</h1>
+                [%- IF session.logged_in %]
+                <div class="ui-grid-a">
+                    <div class="ui-block-a">
+                        <input class="[% type %]" type="checkbox" name="cb-manual-[% facility.id %]" id="cb-manual-[% facility.id %]" [% facility.manual == 'on' or facility.manual == 'off' ? "checked" : "" %]>
+                        <label for="cb-manual-[% facility.id %]">Override Schedule</label>
+                    </div>
+                    <div class="ui-block-b">
+                    <div class="switches">
+                        <select class="[% type %]" name="flip-manual-[% facility.id %]" id="flip-manual-[% facility.id %]" data-role="slider">
+	                        <option value="off" [% facility.manual == 'off' ? "selected" : "" %]>Forced Off</option>
+	                        <option value="on" [% facility.manual == 'on' ? "selected" : "" %]>Forced On</option>
+                        </select> 
+                    </div>
+                    </div>
+                </div>
+                [%- IF session.role == "admin" %]
+                <div class="ui-grid-a">
+                    <div class="ui-block-a">
+                        <label for="select-controller-[% facility.id %]" class="select">Controller:</label>
+                        <select class="[% type %]" name="select-controller-[% facility.id %]" id="select-controller-[% facility.id %]">
+                            [%- FOREACH controller IN controllers %]
+                            <option value="[% controller.id %]" [% facility.controller_id == controller.id ? "selected" : "" %]>[% controller.name %]</option>
+                            [%- END %]
+                        </select>
+                    </div>
+                    <div class="ui-block-b">
+                        <label for="select-pin-[% facility.id %]" class="select">Pin:</label>
+                        <select class="[% type %]" name="select-pin-[% facility.id %]" id="select-pin-[% facility.id %]">
+                            [%- id = 1 %]
+                            [%- WHILE id <= facility.controller.num_digital_pins %]
+                            <option value="[% id %]" [% facility.digital_pin == id ? "selected" : "" %]>[% id %]</option>
+                            [%- id = id + 1 %]
+                            [%- END %]
+                        </select>
+                    </div>
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="name-[% facility.id %]">Name:</label>
+                    <input class="[% type %]" type="text" name="name-[% facility.id %]" id="name-[% facility.id %]" value="[% facility.name %]"  />
+                </div>	
+                <a  href="#dialog-confirm" class="[% type %]"  id="delbtn-[% facility.id %]" data-role="button" data-rel="dialog" data-icon="delete" data-theme="c">Delete '[% facility.name %]'</a>
+                [%- END %]
+                [%- ELSE %]
+                    <p>You need to be logged in to make changes</p>
+                [%- END %]
+            </div>
+            [%- END %]
+            <!--</fieldset>-->
+        [%- ELSE %]
+    <p id="no_items_str">No [% heading %] are configured</p>
+        [%- END %]
+        </form>
+  </div><!-- /content -->
+
+
+[% INCLUDE footer.tt %]
+
+
+<script type="text/javascript">
+
+document.no_items_str = '<p id="no_items_str">' + $("#no_items_str").html() + "</p>";
+
+document.new_item = '' +
+[%- IF session.role == "admin" %]
+'            [%- facility = defaults %]' +
+'            <div data-role="collapsible" id="collapse-[% facility.id %]" data-collapsed="false">' +
+'                <h1 id="head-[% facility.id %]">[% facility.name %]</h1>' +
+'                <div class="ui-grid-a">' +
+'                    <div class="ui-block-a">' +
+'                        <input class="[% type %]" type="checkbox" name="cb-manual-[% facility.id %]" id="cb-manual-[% facility.id %]">' +
+'                        <label for="cb-manual-[% facility.id %]">Override Schedule</label>' +
+'                    </div>' +
+'                    <div class="ui-block-b">' +
+'                   <div class="switches">' +
+'                        <select class="[% type %]" name="flip-manual-[% facility.id %]" id="flip-manual-[% facility.id %]" data-role="slider">' +
+'	                        <option value="off">Forced Off</option>' +
+'	                        <option value="on">Forced On</option>' +
+'                        </select> ' +
+'                    </div>' +
+'                    </div>' +
+'                </div>' +
+'                <div class="ui-grid-a">' +
+'                    <div class="ui-block-a">' +
+'                        <label for="select-controller-[% facility.id %]" class="select">Controller:</label>' +
+'                        <select class="[% type %]" name="select-controller-[% facility.id %]" id="select-controller-[% facility.id %]">' +
+'                            [%- FOREACH controller IN controllers %]' +
+'                            <option value="[% controller.id %]" [% facility.controller_id == controller.id ? "selected" : "" %]>[% controller.name %]</option>' +
+'                            [%- END %]' +
+'                        </select>' +
+'                    </div>' +
+'                    <div class="ui-block-b">' +
+'                        <label for="select-pin-[% facility.id %]" class="select">Pin:</label>' +
+'                        <select class="[% type %]" name="select-pin-[% facility.id %]" id="select-pin-[% facility.id %]">' +
+'                            [%- id = 1 %]' +
+'                            [%- WHILE id <= facility.num_digital_pins %]' +
+'                            <option value="[% id %]">[% id %]</option>' +
+'                            [%- id = id + 1 %]' +
+'                            [%- END %]' +
+'                        </select>' +
+'                    </div>' +
+'                </div>' +
+'                <div data-role="fieldcontain">' +
+'                    <label for="name-[% facility.id %]">Name:</label>' +
+'                    <input class="[% type %]" type="text" name="name-[% facility.id %]" id="name-[% facility.id %]" value="[% facility.name %]"  />' +
+'                </div>	' +
+'                <a  href="#dialog-confirm" class="[% type %]"  id="delbtn-[% facility.id %]" data-role="button" data-rel="dialog" data-icon="delete" data-theme="c">Delete \'[% facility.name %]\'</a>' +
+'            </div>' +
+[%- END %]
+'';
+
+function update_record( $obj ){
+    var type = get_type( $obj );
+    var lwr_type = type.toLowerCase()
+    var id = get_id( $obj );
+    var mode = "none";
+    if( $( "#cb-manual-"+id ).is( ":checked" ) ){
+        mode = $( "#flip-manual-"+id + " option:selected" ).val();
+    }
+    var ctlr = $( "#select-controller-"+id + " option:selected" ).val();
+    var dpin = $( "#select-pin-"+id + " option:selected" ).val();
+    var name = $( "#name-"+id ).val();
+    $.ajax({
+            beforeSend: function() { $.mobile.showPageLoadingMsg(); }, //Show spinner
+            complete: function() { $.mobile.hidePageLoadingMsg() }, //Hide spinner
+        url: "update/" + lwr_type,
+        data: {
+            type: type,
+            id: id,
+            ctlr: ctlr,
+            name: name,
+            dpin: dpin,
+            mode: mode
+        },
+        type: "GET",
+        dataType : "json",
+        success: function( json ) {
+            //alert( json.result );
+        },
+        error: function( xhr, status, thrown ) {
+            alert( "There was an error!  Server said '" + thrown + "'" );
+        },
+    });
+
+}
+
+</script>
+

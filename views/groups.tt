@@ -1,0 +1,112 @@
+[% INCLUDE header.tt %]
+
+    <div data-role=="content">
+        <form id="form-facilitygroup-1">
+        [%- IF groups.size %]
+            [%- FOREACH group IN groups %]
+            <div data-role="collapsible" id="collapse-[% group.id %]">
+                <h1 id="head-[% group.id %]">[% group.name %]</h1>
+                [%- IF session.logged_in %]
+                    <fieldset data-role="controlgroup" id="fs-[% group.id %]">
+                    [%- FOREACH facility IN facilities %]
+                        [%- selected = "";
+                            FOREACH f2g IN f2groups ;
+                                IF group.id == f2g.facilitygroup_id and facility.id == f2g.facility_id;
+                                    selected = "checked";
+                                    LAST;
+                                END;
+                            END %]
+                    <input class="[% type %]" type="checkbox" name="cb-facility-[% facility.id %]-[% group.id %]" id="cb-facility-[% facility.id %]-[% group.id %]" [% selected %]>
+                    <label for="cb-facility-[% facility.id %]-[% group.id %]">[% facility.name %]</label>
+                    [%- END %]
+                </fieldset>
+                [%- IF session.role == "admin" %]
+                <div data-role="fieldcontain">
+                    <label for="name-[% group.id %]">Name:</label>
+                    <input class="[% type %]" type="text" name="name-[% group.id %]" id="name-[% group.id %]" value="[% group.name %]"  />
+                </div>	
+                <a  href="#dialog-confirm" class="[% type %]"  id="delbtn-[% group.id %]" data-role="button" data-rel="dialog" data-icon="delete" data-theme="c">Delete '[% group.name %]'</a>
+                [%- END %]
+                [%- ELSE %]
+                    <p>You need to be logged in to make changes</p>
+                [%- END %]
+            </div>
+            [%- END %]
+        [%- ELSE %]
+    <p id="no_items_str">No [% heading %] are configured</p>
+        [%- END %]
+        </form>
+    </div>
+  </div><!-- /content -->
+
+
+[% INCLUDE footer.tt %]
+
+
+<script type="text/javascript">
+
+document.no_items_str = '<p id="no_items_str">' + $("#no_items_str").html() + "</p>";
+
+document.new_item = '' +
+[%- IF session.role == "admin" %]
+'            [%- group = defaults %]' +
+'            <div data-role="collapsible" id="collapse-[% group.id %]" data-collapsed="false">' +
+'                <h1 id="head-[% group.id %]">[% group.name %]</h1>' +
+'                    <fieldset data-role="controlgroup" id="fs-[% group.id %]">' +
+'                    [%- FOREACH facility IN facilities %]' +
+'                    <input class="[% type %]" type="checkbox" name="cb-facility-[% facility.id %]-[% group.id %]" id="cb-facility-[% facility.id %]-[% group.id %]">' +
+'                    <label for="cb-facility-[% facility.id %]-[% group.id %]">[% facility.name %]</label>' +
+'                    [%- END %]' +
+'                </fieldset>' +
+'                [%- IF session.role == "admin" %]' +
+'                <div data-role="fieldcontain">' +
+'                    <label for="name-[% group.id %]">Name:</label>' +
+'                    <input class="[% type %]" type="text" name="name-[% group.id %]" id="name-[% group.id %]" value="[% group.name %]"  />' +
+'                </div>	' +
+'                <a  href="#dialog-confirm" class="[% type %]"  id="delbtn-[% group.id %]" data-role="button" data-rel="dialog" data-icon="delete" data-theme="c">Delete \'[% group.name %]\'</a>' +
+'                [%- END %]' +
+'            </div>' +
+[%- END %]
+'';
+
+
+function update_record( $obj ){
+    var type = get_type( $obj );
+    var lwr_type = type.toLowerCase()
+    var id = get_id( $obj );
+    var name = $( "#name-"+id ).val();
+    var fa = new Array();
+
+    $('#fs-'+id+' input[type="checkbox"]:checked').each( function( i, cb ) {
+        fa[i] = $(cb).attr('id');        
+    });
+    
+    fals = fa.join(":");
+
+    $.ajax({
+        beforeSend: function() { $.mobile.showPageLoadingMsg(); }, //Show spinner
+        complete: function() { $.mobile.hidePageLoadingMsg() }, //Hide spinner
+        url: "update/" + lwr_type,
+        data: {
+            type: type,
+            id: id,
+            fals: fals,
+            name: name,
+        },
+        type: "GET",
+        dataType : "json",
+        success: function( json ) {
+            //alert( json.result );
+        },
+        error: function( xhr, status, thrown ) {
+            alert( "There was an error!  Server said '" + thrown + "'" );
+        },
+    });
+}
+
+
+
+
+
+</script>
+

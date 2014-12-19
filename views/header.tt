@@ -1,0 +1,10 @@
+<div data-role="page"  id="mainPage" data-theme="a" data-content-theme="a">
+
+  <div data-role="header">
+    <a href="[% index_url %]" data-role="button" data-inline="true" data-icon="back">Back</a>
+    <h1>[% heading %]</h1>
+    [%- IF session.role == "admin" %]
+    <a href="#" data-role="button" data-mini="true" data-icon="plus" id="addNewButton">Add</a>
+    [%- END %]
+  </div><!-- /header -->
+

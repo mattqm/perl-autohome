@@ -1,0 +1,135 @@
+<div data-role="page" id="mainPage" data-content-theme="a">
+
+  <div data-role="header" id="header_bar">
+    <h1>[% heading %]</h1>
+    [%- logout_btn %]
+    [%- login_btn %]
+  </div><!-- /header -->
+
+    <div data-role=="content">
+            <ul data-role="listview" data-theme="a" data-dividertheme="d">
+				<li data-role="list-divider">Manage</li>
+                <li><a href="[% scheds_url %]">Schedules</a></li>
+                <li><a href="[% falgroups_url %]">Facility Groups</a></li>
+                <li><a href="[% fals_url %]">Facilities</a></li>
+            </ul>
+        </div><!-- /content -->
+
+  <div data-role="footer">
+    [%- vars.cright %]
+  </div><!-- /footer -->
+
+</div><!-- /page -->
+
+
+
+
+<div data-role="page" id="dialog-login">
+
+  <div data-role="header">
+    <h2>Login</h2>
+  </div><!-- /header -->
+
+  <div data-role="content">
+    <p>Enter your login details:</p>
+        <div data-role="fieldcontain">
+	         <label for="username">Username:</label>
+	         <input type="text" name="username" id="username" value="" />
+        </div>
+
+	    <div data-role="fieldcontain">
+	         <label for="password">Password:</label>
+	         <input type="password" name="password" id="password" value="" />
+        </div>
+
+    <div class="error" id="login_error"></div>
+
+	<a href="#" id="logInButton2" data-role="button" data-rel="dialog" data-transition="slidedown" data-theme="b">Login</a>       
+	<a data-role="button" data-rel="back" data-theme="a">Cancel</a>
+  </div><!-- /content -->
+
+</div><!-- /page -->
+
+
+
+<script type="text/javascript">
+
+<!-- jQuery to apply actions to the ESC key -->  
+$(document).keydown(function(e) {  
+    if (e.keyCode == 27 && $.mobile.activePage.attr( "id" ) == "dialog-login" ) {  
+        history.back();
+    }  
+});  
+
+<!-- jQuery to apply actions to the Return key -->  
+$(document).keydown(function(e) {  
+    if (e.keyCode == 13 && $.mobile.activePage.attr( "id" ) == "dialog-login" ) {  
+        $( "#logInButton2" ).trigger( "click" );
+    }  
+});  
+
+$(document).ready(function(){  
+
+    $("#logOutButton").on( "click", function () {
+        setup_logout_btn();
+    });
+    $("#logInButton").on( "click", function () {
+        $("#login_error").html("");
+    });
+    $("#logInButton2").on( "click", function () {
+        setup_login_btn();
+    });
+
+    [% IF session.logged_in %]
+    $( "#logInButton" ).hide();
+    [%- ELSE %]
+    $( "#logOutButton" ).hide();
+    [%- END %]
+})  
+
+function setup_login_btn(){
+    $.ajax({
+        url: "login",
+        data: { user: $( "#username" ).val(),
+                pass: $( "#password" ).val(),
+         },
+        type: "GET",
+        dataType : "json",
+        success: function( json ) {
+            if( json.result == "success" ){
+                $( "#logInButton" ).hide();
+                $( "#logOutButton" ).show();
+                $.mobile.changePage('#mainPage')
+            } else {
+                $("#login_error").html("<p>Login failed: incorrect username or password!</p>");
+            }
+        },
+        error: function( xhr, status, thrown ) {
+            alert( "There was an error!  Server said '" + thrown + "'" );
+        },
+    });
+}
+
+function setup_logout_btn(){
+    $.ajax({
+        url: "logout",
+        data: {  },
+        type: "GET",
+        dataType : "json",
+        success: function( json ) {
+            if( json.result == "success" ){
+                $( "#logOutButton" ).hide();
+                $( "#logInButton" ).show();
+                $.mobile.changePage('#mainPage');
+            }
+        },
+        error: function( xhr, status, thrown ) {
+            alert( "There was an error!  Server said '" + thrown + "'" );
+        },
+    });
+}
+
+function update_record( $obj ){
+}
+    
+</script>

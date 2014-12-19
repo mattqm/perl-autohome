@@ -1,0 +1,25 @@
+  <div data-role="footer">
+    [%- vars.cright %]
+  </div><!-- /footer -->
+
+</div><!-- /page -->
+
+
+
+
+
+<div data-role="page" id="dialog-confirm">
+
+  <div data-role="header">
+    <h2>Delete</h2>
+  </div><!-- /header -->
+
+  <div data-role="content">
+    <p>Are you sure you want to delete '<span id="item_name"></span>'?</p>
+	<a href="#mainPage"  class="[% type %]" id="delButton" data-role="button" data-rel="dialog" data-transition="slidedown" data-theme="c">Delete</a>       
+	<a data-role="button" data-rel="back" data-theme="a">Cancel</a>
+  </div><!-- /content -->
+
+</div><!-- /page -->
+
+

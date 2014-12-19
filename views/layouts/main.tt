@@ -1,0 +1,206 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-type" content="text/html; charset=[% settings.charset %]" />
+<title>Home Automation</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1"> 
+<!--<script type="text/javascript" src="[% request.uri_base %]/javascripts/autohome1.js"></script>-->
+<!--<script type="text/javascript" src="[% request.uri_base %]/javascripts/autohome2.js"></script>-->
+
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+
+<!--<link rel="stylesheet" href="[% request.uri_base %]/css/ios-inspired/styles.css" />-->
+<link rel="stylesheet" href="[% request.uri_base %]/css/autohome/style.min.css" />
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile.structure-1.3.2.min.css" />
+<!--<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />-->
+<!--<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.0-beta.1/jquery.mobile-1.4.0-beta.1.min.css">-->
+
+<link rel="stylesheet" href="[% request.uri_base %]/css/autohome.css" />
+
+<script type="text/javascript">
+
+$( document ).bind( 'mobileinit', function(){
+    $.mobile.defaultPageTransition = "slide";
+});
+
+$( document ).bind( 'mobileinit', function(){
+    $.mobile.loader.prototype.options.text = "loading";
+    $.mobile.loader.prototype.options.textVisible = false;
+    $.mobile.loader.prototype.options.theme = "a";
+    $.mobile.loader.prototype.options.html = "";
+});
+
+</script>
+<!--<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>-->
+<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+<!--<script src="http://code.jquery.com/mobile/1.4.0-beta.1/jquery.mobile-1.4.0-beta.1.min.js"></script>-->
+
+<script src="[% request.uri_base %]/javascripts/mobiscroll.core.js" type="text/javascript"></script>
+<script src="[% request.uri_base %]/javascripts/mobiscroll.datetime.js" type="text/javascript"></script>
+<link href="[% request.uri_base %]/css/mobiscroll.core.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+[% content %]
+<script type="text/javascript">
+
+$(document).ready(function(){  
+
+    $( "input" ).change(function () {
+        item_name_change( $(this) );
+    });
+
+    $( "input" ).each( function () {
+        enable_slider_on_cb( $(this) );
+    });
+
+    $( "select" ).change(function () {
+        update_record( $(this) );
+    });
+
+    $("a.[% type %]").on( "click", function () {
+        set_item( $(this) );
+    });
+    $("#delButton").on( "click", function () {
+        del_record( $(this));
+    });
+
+    $("#addNewButton").on( "click", function () {
+        new_record( $(this), "[% type %]");
+    });
+})  
+
+
+function item_name_change( $obj ){
+    var id = get_id($obj);
+    if( $obj.attr( "name" ) == "cb-manual-"+id ){
+        enable_slider( $obj, "#flip-manual-");
+    }
+    if( $obj.attr( "name" ) == "name-"+id ){
+        inner = $( "#head-"+id ).find('.ui-collapsible-heading-status').html();
+        $( "#head-"+id ).find('.ui-btn-text').html( $obj.val() + "<span class=\"ui-collapsible-heading-status\"> " + inner + "</span>" );
+    }
+    update_record( $obj );
+}
+
+function get_type( $obj ){
+    var type = $obj.attr("class");
+    var n = type.split(" ");
+    return n[0];
+}
+
+function get_id( $obj ){
+    var id = $obj.attr("id");
+    var n=id.split("-");
+    return n[n.length-1];
+}
+
+function enable_slider( $obj, name ){
+    var id = get_id( $obj );
+    if( $obj.attr( "type" ) == "checkbox" ){
+        if( $obj.is( ":checked" ) ){
+            $( name+id).slider('enable');
+        } else {
+            $( name+id ).slider('disable');
+        }
+    }
+}
+
+function get_item_name(id){
+    name = $( "#head-"+id ).find('.ui-btn-text').html();
+    if( name == 'undefined' ){
+        name = $( "#head-"+id ).html();
+        name = name.replace(/<span.*>/g,"");
+        name = name.replace(/<a[^>]*>/g,"");
+        name = name.replace(/<\/a[^>]*>/g,"");
+    } else {
+        name = name.replace(/<span.*>/g,"");
+    }
+    return name;
+}
+
+function set_item( $obj ){
+        if( $obj.attr('id') != 'delButton' ){
+            document.current_item_id = get_id($obj);
+            $("#item_name").text(get_item_name(document.current_item_id));
+        }
+}
+
+function enable_slider_on_cb( $obj ){
+    if( $obj.attr( "name" ) == "cb-manual-"+get_id($obj) ){
+        enable_slider( $obj, "#flip-manual-");
+    }
+}
+
+function new_record( $obj, type ){
+    var lwr_type = type.toLowerCase()
+        $.ajax({
+            beforeSend: function() { $.mobile.showPageLoadingMsg(); }, //Show spinner
+            complete: function() { $.mobile.hidePageLoadingMsg() }, //Hide spinner
+            url: "add/" + lwr_type,
+            data: {},
+            type: "GET",
+            dataType : "json",
+            success: function( json ) {
+                new_id = json.result;
+                [% # add and empty item and put handlers on each field 
+%]
+                $("form").append(document.new_item.replace(/99999999/g,new_id));
+                $("form").trigger('create');
+                $("input").change(function () { item_name_change( $(this) ); });
+                $("input").each( function () { enable_slider_on_cb( $(this) ); });
+                $("select").change(function () { update_record( $(this) ); });
+                $(".time").mobiscroll().time();
+                $("a." + type ).on( "click", function () {
+                    [% # add a handler to the delete button, so that when it is pressed the ID of the
+                       #  current item is stored in a global, so the confirm dialog can access it.
+                       # need to prevent the final delete button from overridding it though
+%]
+                    if( $(this).attr('id') != 'delButton' ){
+                        document.current_item_id = get_id($(this));
+                        $("#item_name").text(get_item_name(document.current_item_id));
+                    }
+                });
+                [% # Remove the string that says there are no items
+%]
+                $("#no_items_str").remove();
+                [% # Save the default values
+%]
+                $("#name-"+new_id).trigger('change');
+            },
+            error: function( xhr, status, thrown ) {
+                alert( "There was an error!  Server said '" + thrown + "'" );
+            },
+        });
+}
+
+function del_record( $obj ){
+    var type = get_type( $obj );
+    var lwr_type = type.toLowerCase()
+        $.ajax({
+            beforeSend: function() { $.mobile.showPageLoadingMsg(); }, //Show spinner
+            complete: function() { $.mobile.hidePageLoadingMsg() }, //Hide spinner
+            url: "delete/" + lwr_type,
+            data: { id: document.current_item_id },
+            type: "GET",
+            dataType : "json",
+            success: function( json ) {
+                $( "#collapse-"+document.current_item_id ).remove();
+                if( $("#form-" + lwr_type + "-1").children().length == 0 ){
+                    $("form").append(document.no_items_str);
+                    $("form").trigger('create');
+                }
+            },
+            error: function( xhr, status, thrown ) {
+                alert( "There was an error!  Server said '" + thrown + "'" );
+            },
+        });
+}
+
+
+
+</script>
+</body>
+</html>
+

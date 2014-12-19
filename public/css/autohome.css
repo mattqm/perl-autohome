@@ -1,0 +1,28 @@
+.switches .ui-slider-switch { 
+    width: 9em;
+    margin-left: 10% ;
+    margin-right: auto ;
+}
+
+.plain_link {
+    color: #d4d4d4;
+    text-align: center;
+}
+
+.error {
+    color: #FF0000;
+    text-align: center;
+}
+
+/*body .ui-checkbox {
+ white-space: normal;
+}
+
+body .ui-li .ui-li-desc {
+ white-space: normal;
+}
+
+body .ui-footer .ui-title {
+ white-space: normal;
+}*/
+

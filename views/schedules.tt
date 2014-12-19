@@ -1,0 +1,202 @@
+[% INCLUDE header.tt %]
+
+    <div data-role=="content">
+        <form id="form-schedule-1">
+        [%- IF schedules.size %]
+            [%- FOREACH schedule IN schedules %]
+            <div data-role="collapsible" id="collapse-[% schedule.id %]">
+                <h1 id="head-[% schedule.id %]">[% schedule.name %]</h1>
+                [%- IF session.logged_in %]
+                    [%- IF session.role == "admin" %]
+                    <div data-role="fieldcontain">
+                        <label for="select-group-[% schedule.id %]" class="select">Facility Group:</label>
+                        <select class="[% type %]" name="select-group-[% schedule.id %]" id="select-group-[% schedule.id %]">
+                            <option value="-1" [% schedule.facilitygroup_id == -1 ? "selected" : "" %]>&lt; None &gt;</option>
+                            [%- FOREACH group IN groups %]
+                            <option value="[% group.id %]" [% schedule.facilitygroup_id == group.id ? "selected" : "" %]>[% group.name %]</option>
+                            [%- END %]
+                        </select>
+			        </div>
+                    [%- END %]
+                    <div class="switches">
+                        <select class="[% type %]" name="flip-active-[% schedule.id %]" id="flip-active-[% schedule.id %]" data-role="slider">
+	                        <option value="0" [% schedule.active == 0 ? "selected" : "" %]>Inactive</option>
+	                        <option value="1" [% schedule.active == 1 ? "selected" : "" %]>Active</option>
+                        </select> 
+			        </div>
+                    <div data-role="fieldcontain">
+                        <label for="select-skip-[% schedule.id %]" class="select">Run every:</label>
+                        <select class="[% type %]" name="select-skip-[% schedule.id %]" id="select-skip-[% schedule.id %]">
+                            [%- id = 1 %]
+                            [%- WHILE id <= 14 %]
+                            <option value="[% id %]" [% schedule.skip_days == id ? "selected" : "" %]>[% id > 1 ? "$id days" : "day" %] </option>
+                            [%- id = id + 1 %]
+                            [%- END %]
+                        </select>
+			        </div>
+	                <div data-role="fieldcontain">
+	                    <label for="time">At time:</label>
+	                    <input type="time" class="time" name="time-[% schedule.id %]" id="time-[% schedule.id %]" value="[% schedule.time_of_day %]" />
+			        </div>
+	                <div data-role="fieldcontain">
+                        <label for="select-dur-[% schedule.id %]" class="select">For duration:</label>
+                        <select class="[% type %]" name="select-dur-[% schedule.id %]" id="select-dur-[% schedule.id %]">
+                            [%- FOREACH min IN minutes %]
+                            <option value="[% min %]" [% schedule.duration == min ? "selected" : "" %]>[% ;
+IF min > 1 ;
+    IF min == 60;
+        "1 hour";
+    ELSIF min > 60;
+        hours = min / 60;
+        "$hours hours";
+    ELSE;
+        "$min minutes";
+    END;
+ELSE;
+    "1 minute";
+END;
+ %] </option>
+                            [%- END %]
+                        </select>
+			        </div>
+                    [%- IF session.role == "admin" %]
+                <div data-role="fieldcontain">
+                    <label for="name-[% schedule.id %]">Name:</label>
+                    <input class="[% type %]" type="text" name="name-[% schedule.id %]" id="name-[% schedule.id %]" value="[% schedule.name %]"  />
+                </div>	
+                <a  href="#dialog-confirm" class="[% type %]"  id="delbtn-[% schedule.id %]" data-role="button" data-rel="dialog" data-icon="delete" data-theme="c">Delete '[% schedule.name %]'</a>
+                [%- END %]
+                [%- ELSE %]
+                    <p>You need to be logged in to make changes</p>
+                [%- END %]
+            </div>
+            [%- END %]
+        [%- ELSE %]
+    <p id="no_items_str">No [% heading %] are configured</p>
+        [%- END %]
+        </form>
+    </div>
+  </div><!-- /content -->
+
+
+[% INCLUDE footer.tt %]
+
+
+<script type="text/javascript">
+
+$(document).on('pageinit', '#mainPage', function () {
+    $(".time").mobiscroll().time();
+});
+
+document.no_items_str = '<p id="no_items_str">' + $("#no_items_str").html() + "</p>";
+
+document.new_item = '' +
+'[%- IF session.role == "admin" %]' +
+'            [%- schedule = defaults %]' +
+'            <div data-role="collapsible" id="collapse-[% schedule.id %]" data-collapsed="false">' +
+'                <h1 id="head-[% schedule.id %]">[% schedule.name %]</h1>' +
+'                    <div data-role="fieldcontain">' +
+'                        <label for="select-group-[% schedule.id %]" class="select">Facility Group:</label>' +
+'                        <select class="[% type %]" name="select-group-[% schedule.id %]" id="select-group-[% schedule.id %]">' +
+'                            <option value="-1" "selected">&lt; None &gt;</option>' +
+'                            [%- FOREACH group IN groups %]' +
+'                            <option value="[% group.id %]">[% group.name %]</option>' +
+'                            [%- END %]' +
+'                        </select>' +
+'			        </div>' +
+'                    <div class="switches">' +
+'                        <select class="[% type %]" name="flip-active-[% schedule.id %]" id="flip-active-[% schedule.id %]" data-role="slider">' +
+'	                        <option value="0" [% 1 == 0 ? "selected" : "" %]>Inactive</option>' +
+'	                        <option value="1" [% 1 == 1 ? "selected" : "" %]>Active</option>' +
+'                        </select> ' +
+'			        </div>' +
+'                [%- IF session.role == "admin" %]' +
+'                    <div data-role="fieldcontain">' +
+'                        <label for="select-skip-[% schedule.id %]" class="select">Run every:</label>' +
+'                        <select class="[% type %]" name="select-skip-[% schedule.id %]" id="select-skip-[% schedule.id %]">' +
+'                            [%- id = 1 %]' +
+'                            [%- WHILE id <= 14 %]' +
+'                            <option value="[% id %]" [% 1 == id ? "selected" : "" %]>[% id > 1 ? "$id days" : "day" %] </option>' +
+'                            [%- id = id + 1 %]' +
+'                            [%- END %]' +
+'                        </select>' +
+'			        </div>' +
+'	                <div data-role="fieldcontain">' +
+'	                    <label for="time">At time:</label>' +
+'	                    <input type="time" class="time" name="time-[% schedule.id %]" id="time-[% schedule.id %]" value="[% schedule.time_of_day %]" />' +
+'			        </div>' +
+'	                <div data-role="fieldcontain">' +
+'                        <label for="select-dur-[% schedule.id %]" class="select">For duration:</label>' +
+'                        <select class="[% type %]" name="select-dur-[% schedule.id %]" id="select-dur-[% schedule.id %]">' +
+'                            [%- FOREACH min IN minutes %]' +
+'                            <option value="[% min %]" [% schedule.duration == min ? "selected" : "" %]> ' +
+[% ;
+IF min > 1 ;
+    IF min == 60;
+        str = "1 hour";
+    ELSIF min > 60;
+        hours = min / 60;
+        str = "$hours hours";
+    ELSE;
+        str = "$min minutes";
+    END;
+ELSE;
+    str = "1 minute";
+END %]
+'                                       [%- str %] </option>' +
+'                            [%- END %]' +
+'                        </select>' +
+'			        </div>' +
+'                <div data-role="fieldcontain">' +
+'                    <label for="name-[% schedule.id %]">Name:</label>' +
+'                    <input class="[% type %]" type="text" name="name-[% schedule.id %]" id="name-[% schedule.id %]" value="[% schedule.name %]"  />' +
+'                </div>	' +
+'                <a  href="#dialog-confirm" class="[% type %]"  id="delbtn-[% schedule.id %]" data-role="button" data-rel="dialog" data-icon="delete" data-theme="c">Delete \'[% schedule.name %]\'</a>' +
+'                [%- END %]' +
+'            </div>' +
+'[%- END %]' +
+'';
+
+function update_record( $obj ){
+    var type = "[% type %]";
+    var lwr_type = type.toLowerCase()
+    var id = get_id( $obj );
+    var grp = $( "#select-group-"+id + " option:selected" ).val();
+    var actv = $( "#flip-active-"+id + " option:selected" ).val();
+    var skip = $( "#select-skip-"+id + " option:selected" ).val();
+    var time = $( "#time-"+id ).val();
+    var durn = $( "#select-dur-"+id + " option:selected" ).val();
+    var name = $( "#name-"+id ).val();
+    $.ajax({
+        beforeSend: function() { $.mobile.showPageLoadingMsg(); }, //Show spinner
+        complete: function() { $.mobile.hidePageLoadingMsg() }, //Hide spinner
+        url: "update/" + lwr_type,
+        data: {
+            type: type,
+            id: id,
+            name: name,
+            grp: grp,
+            actv: actv,
+            skip: skip,
+            time: time,
+            durn: durn,
+        },
+        type: "GET",
+        dataType : "json",
+        success: function( json ) {
+            //alert( json.result );
+        },
+        error: function( xhr, status, thrown ) {
+            alert( "There was an error!  Server said '" + thrown + "'" );
+        },
+    });
+
+}
+
+
+
+
+
+
+
+</script>
