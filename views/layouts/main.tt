@@ -29,6 +29,7 @@ $( document ).bind( 'mobileinit', function(){
     $.mobile.loader.prototype.options.textVisible = false;
     $.mobile.loader.prototype.options.theme = "a";
     $.mobile.loader.prototype.options.html = "";
+    $.mobile.ajaxEnabled = false;
 });
 
 </script>
@@ -64,6 +65,7 @@ $(document).ready(function(){
     $("a.[% type %]").on( "click", function () {
         set_item( $(this) );
     });
+
     $("#delButton").on( "click", function () {
         del_record( $(this));
     });
