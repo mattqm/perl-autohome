@@ -29,10 +29,10 @@ auto_reload: 0
 plugins:
   DBIC:
     default:
-      dsn: dbi:mysql:autohome:dev001.mallard.au
+      dsn: dbi:mysql:autohome:localhost
       schema_class: autohome::Schema
       user: matt
-      pass: u95Vj8q8mtcjV54M
+      password: nYBbSCQp9ajRTSWV
       options:
         RaiseError: 1
         PrintError: 1

@@ -19,7 +19,7 @@ $(document).ready(function(){
     });
     $("#delButton").on( "click", function () {
         $.ajax({
-            url: "delete/facility",
+            url: "/api/delete/facility",
             data: { id: current_facility_id },
             type: "GET",
             dataType : "json",
@@ -35,7 +35,7 @@ $(document).ready(function(){
     $("#addNewButton").on( "click", function () {
         //new_facility();
         $.ajax({
-            url: "add/facility",
+            url: "/api/add/facility",
             data: {},
             type: "GET",
             dataType : "json",

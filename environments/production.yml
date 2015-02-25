@@ -22,7 +22,7 @@ plugins:
       dsn: dbi:mysql:autohome:prd002.mallard.au
       schema_class: autohome::Schema
       user: matt
-      pass: u95Vj8q8mtcjV54M
+      password: u95Vj8q8mtcjV54M
       options:
         RaiseError: 1
         PrintError: 1

@@ -86,7 +86,7 @@ function update_record( $obj ){
     $.ajax({
         beforeSend: function() { $.mobile.showPageLoadingMsg(); }, //Show spinner
         complete: function() { $.mobile.hidePageLoadingMsg() }, //Hide spinner
-        url: "update/" + lwr_type,
+        url: "/api/update/" + lwr_type,
         data: {
             type: type,
             id: id,

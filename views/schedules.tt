@@ -60,12 +60,12 @@ END;
                         </select>
 			        </div>
                     [%- IF session.role == "admin" %]
-                <div data-role="fieldcontain">
-                    <label for="name-[% schedule.id %]">Name:</label>
-                    <input class="[% type %]" type="text" name="name-[% schedule.id %]" id="name-[% schedule.id %]" value="[% schedule.name %]"  />
-                </div>	
-                <a  href="#dialog-confirm" class="[% type %]"  id="delbtn-[% schedule.id %]" data-role="button" data-rel="dialog" data-icon="delete" data-theme="c">Delete '[% schedule.name %]'</a>
-                [%- END %]
+                    <div data-role="fieldcontain">
+                        <label for="name-[% schedule.id %]">Name:</label>
+                        <input class="[% type %]" type="text" name="name-[% schedule.id %]" id="name-[% schedule.id %]" value="[% schedule.name %]"  />
+                    </div>	
+                    <a  href="#dialog-confirm" class="[% type %]"  id="delbtn-[% schedule.id %]" data-role="button" data-rel="dialog" data-icon="delete" data-theme="c">Delete '[% schedule.name %]'</a>
+                    [%- END %]
                 [%- ELSE %]
                     <p>You need to be logged in to make changes</p>
                 [%- END %]
@@ -170,7 +170,7 @@ function update_record( $obj ){
     $.ajax({
         beforeSend: function() { $.mobile.showPageLoadingMsg(); }, //Show spinner
         complete: function() { $.mobile.hidePageLoadingMsg() }, //Hide spinner
-        url: "update/" + lwr_type,
+        url: "/api/update/" + lwr_type,
         data: {
             type: type,
             id: id,

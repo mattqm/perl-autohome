@@ -89,7 +89,7 @@ $(document).ready(function(){
 
 function setup_login_btn(){
     $.ajax({
-        url: "login",
+        url: "/api/login",
         data: { user: $( "#username" ).val(),
                 pass: $( "#password" ).val(),
          },
@@ -112,7 +112,7 @@ function setup_login_btn(){
 
 function setup_logout_btn(){
     $.ajax({
-        url: "logout",
+        url: "/api/logout",
         data: {  },
         type: "GET",
         dataType : "json",

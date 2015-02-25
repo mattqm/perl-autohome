@@ -13,20 +13,22 @@ layout: "main"
 # all the magic of encoding and decoding. You should not care
 # about unicode within your app when this setting is set (recommended).
 charset: "UTF-8"
+session: "YAML"
 
+#behind_proxy: 1
 # template engine
 # simple: default and very basic template engine
+template: "template_toolkit"
 # template_toolkit: TT
 
 # template: "simple"
 
-template: "template_toolkit"
-session: "YAML"
 engines:
-  template_toolkit:
-    encoding:  'utf8'
-    start_tag: '[%'
-    end_tag:   '%]'
+  template:
+    template_toolkit:
+      encoding:  'utf8'
+      start_tag: '[%'
+      end_tag:   '%]'
   session:
     YAML:
       session_dir: "/tmp/dancer-sessions"
@@ -40,7 +42,7 @@ log: "debug"
 show_errors: 1
 access_log: 1
 warnings: 1
-serializer: "JSON"
+#serializer: "JSON"
 
 user1: "admin"
 pass1: "password"

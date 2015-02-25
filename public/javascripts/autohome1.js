@@ -10,7 +10,7 @@ function update_facility( type, id, mode, ctlr, dpin, name ){
     /*alert("Setting " + type + " " + id + " to " + mode);*/
     $.ajax({
         // the URL for the request
-        url: "update/facility",
+        url: "/api/update/facility",
     
         // the data to send (will be converted to a query string)
         data: {
@@ -51,7 +51,7 @@ function update_facility( type, id, mode, ctlr, dpin, name ){
 }
 function new_facility(){
     $.ajax({
-        url: "new/facility",
+        url: "/api/new/facility",
         data: {},
         type: "GET",
         dataType : "json",
@@ -68,7 +68,7 @@ function update_connection( type, id, mode ){
     /*alert("Setting " + type + " " + id + " to " + mode);*/
     $.ajax({
         // the URL for the request
-        url: "update",
+        url: "/api/update",
     
         // the data to send (will be converted to a query string)
         data: {

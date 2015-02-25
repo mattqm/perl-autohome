@@ -40,6 +40,8 @@ $( document ).bind( 'mobileinit', function(){
 <script src="[% request.uri_base %]/javascripts/mobiscroll.datetime.js" type="text/javascript"></script>
 <link href="[% request.uri_base %]/css/mobiscroll.core.css" rel="stylesheet" type="text/css" />
 
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<META HTTP-EQUIV="Expires" CONTENT="-1">
 </head>
 <body>
 [% content %]
@@ -138,7 +140,7 @@ function new_record( $obj, type ){
         $.ajax({
             beforeSend: function() { $.mobile.showPageLoadingMsg(); }, //Show spinner
             complete: function() { $.mobile.hidePageLoadingMsg() }, //Hide spinner
-            url: "add/" + lwr_type,
+            url: "/api/add/" + lwr_type,
             data: {},
             type: "GET",
             dataType : "json",
@@ -181,7 +183,7 @@ function del_record( $obj ){
         $.ajax({
             beforeSend: function() { $.mobile.showPageLoadingMsg(); }, //Show spinner
             complete: function() { $.mobile.hidePageLoadingMsg() }, //Hide spinner
-            url: "delete/" + lwr_type,
+            url: "/api/delete/" + lwr_type,
             data: { id: document.current_item_id },
             type: "GET",
             dataType : "json",
