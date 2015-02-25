@@ -7,6 +7,7 @@ use Dancer2::Plugin::Ajax;
 use Dancer2::Plugin::DBIC qw(schema resultset rset);
 use autohome::Schema;
 use autohome::subs;
+
 set serializer => 'JSON';
 
 my $sched_defaults = { id => 99999999, name => 'New Schedule', time_of_day => '05:00:00', duration => 5 };
