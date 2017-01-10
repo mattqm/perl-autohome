@@ -36,8 +36,8 @@
                     <div class="ui-block-b">
                         <label for="select-pin-[% facility.id %]" class="select">Pin:</label>
                         <select class="[% type %]" name="select-pin-[% facility.id %]" id="select-pin-[% facility.id %]">
-                            [%- id = 1 %]
-                            [%- WHILE id <= facility.controller.num_digital_pins %]
+                            [%- id = 0 %]
+                            [%- WHILE id < facility.controller.num_digital_pins %]
                             <option value="[% id %]" [% facility.digital_pin == id ? "selected" : "" %]>[% id %]</option>
                             [%- id = id + 1 %]
                             [%- END %]
@@ -48,7 +48,7 @@
                     <label for="name-[% facility.id %]">Name:</label>
                     <input class="[% type %]" type="text" name="name-[% facility.id %]" id="name-[% facility.id %]" value="[% facility.name %]"  />
                 </div>	
-                <a  href="#dialog-confirm" class="[% type %]"  id="delbtn-[% facility.id %]" data-role="button" data-rel="dialog" data-icon="delete" data-theme="c">Delete '[% facility.name %]'</a>
+                <a  href="#dialog-confirm" class="[% type %] error"  id="delbtn-[% facility.id %]" data-role="button" data-rel="dialog" data-icon="delete" data-theme="c">Delete '[% facility.name %]'</a>
                 [%- END %]
                 [%- ELSE %]
                     <p>You need to be logged in to make changes</p>
@@ -130,8 +130,8 @@ function update_record( $obj ){
     var dpin = $( "#select-pin-"+id + " option:selected" ).val();
     var name = $( "#name-"+id ).val();
     $.ajax({
-            beforeSend: function() { $.mobile.showPageLoadingMsg(); }, //Show spinner
-            complete: function() { $.mobile.hidePageLoadingMsg() }, //Hide spinner
+        beforeSend: function() { $.mobile.loading( "show" ); }, //Show spinner
+        complete: function() { $.mobile.loading( "hide" ); }, //Hide spinner
         url: "/api/update/" + lwr_type,
         data: {
             type: type,

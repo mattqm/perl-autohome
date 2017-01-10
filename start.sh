@@ -1,6 +1,6 @@
 set -a
-appdir=/code/websites/autohome/WebApp
+appdir=/code/Dancer/AutoHome
 environment=development
 workers=2
 port=3001
-plackup -s Starman -a $appdir/bin/app.pl -I $appdir/lib -E $environment -l 192.168.128.50:$port --workers=$workers
+plackup -s Starman -a $appdir/bin/app.pl -I $appdir/lib -E $environment -l :$port --workers=$workers

@@ -2,11 +2,11 @@ package autohome::subs;
 use Data::Dumper;
 use autohome::Schema;
 
-my $dbi_dsn = "dbi:mysql:autohome:prd002.mallard.au";
-#my $dbi_dsn = "dbi:mysql:autohome:localhost";
+#my $dbi_dsn = "dbi:mysql:autohome:prd002.mallard.au";
+my $dbi_dsn = "dbi:mysql:autohome:localhost";
 my $user = "matt";
-my $pass = "u95Vj8q8mtcjV54M";
-#my $pass = "nYBbSCQp9ajRTSWV";
+#my $pass = "u95Vj8q8mtcjV54M";
+my $pass = "nYBbSCQp9ajRTSWV";
 my %dbi_params;
 
 my $schema = autohome::Schema->connect($dbi_dsn, $user, $pass, \%dbi_params);

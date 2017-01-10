@@ -1,0 +1,3 @@
+[submodule "lib/QTechLib"]
+	path = lib/QTechLib
+	url = git@git:Dancer/QTechLib

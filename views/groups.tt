@@ -84,8 +84,8 @@ function update_record( $obj ){
     fals = fa.join(":");
 
     $.ajax({
-        beforeSend: function() { $.mobile.showPageLoadingMsg(); }, //Show spinner
-        complete: function() { $.mobile.hidePageLoadingMsg() }, //Hide spinner
+        beforeSend: function() { $.mobile.loading( "show" ); }, //Show spinner
+        complete: function() { $.mobile.loading( "hide" ); }, //Hide spinner
         url: "/api/update/" + lwr_type,
         data: {
             type: type,

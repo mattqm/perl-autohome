@@ -202,7 +202,7 @@ ajax '/update/schedule' => sub {
                 $rs->facilitygroup_id($grp);
                 $rs->time_of_day($time);
                 $rs->duration($durn);
-                $rs->skip_days($skip);
+                $rs->skip_days($skip - 1);
                 $rs->active($actv);
             }
             debug "Logged in with role:". session 'role';

@@ -29,7 +29,7 @@
                         <select class="[% type %]" name="select-skip-[% schedule.id %]" id="select-skip-[% schedule.id %]">
                             [%- id = 1 %]
                             [%- WHILE id <= 14 %]
-                            <option value="[% id %]" [% schedule.skip_days == id ? "selected" : "" %]>[% id > 1 ? "$id days" : "day" %] </option>
+                            <option value="[% id %]" [% (schedule.skip_days + 1) == id ? "selected" : "" %]>[% id > 1 ? "$id days" : "day" %] </option>
                             [%- id = id + 1 %]
                             [%- END %]
                         </select>
@@ -168,8 +168,8 @@ function update_record( $obj ){
     var durn = $( "#select-dur-"+id + " option:selected" ).val();
     var name = $( "#name-"+id ).val();
     $.ajax({
-        beforeSend: function() { $.mobile.showPageLoadingMsg(); }, //Show spinner
-        complete: function() { $.mobile.hidePageLoadingMsg() }, //Hide spinner
+        beforeSend: function() { $.mobile.loading( "show" ); }, //Show spinner
+        complete: function() { $.mobile.loading( "hide" ); }, //Hide spinner
         url: "/api/update/" + lwr_type,
         data: {
             type: type,
