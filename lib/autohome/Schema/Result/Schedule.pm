@@ -38,7 +38,7 @@ __PACKAGE__->table("schedules");
 =head2 facilitygroup_id
 
   data_type: 'integer'
-  is_nullable: 1
+  is_nullable: 0
 
 =head2 time_of_day
 
@@ -80,7 +80,7 @@ __PACKAGE__->add_columns(
   "name",
   { data_type => "varchar", is_nullable => 1, size => 64 },
   "facilitygroup_id",
-  { data_type => "integer", is_nullable => 1 },
+  { data_type => "integer", is_nullable => 0 },
   "time_of_day",
   { data_type => "time", default_value => "00:00:00", is_nullable => 1 },
   "duration",
@@ -110,8 +110,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("id");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07024 @ 2013-10-03 20:22:07
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:rlGlANuggIb26+OYtJxmeg
+# Created by DBIx::Class::Schema::Loader v0.07039 @ 2017-02-02 10:57:18
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ehSy54fbaGd0dzykSWBJjw
 
 
 __PACKAGE__->has_many( 'facilitygroups' => 'autohome::Schema::Result::Facilitygroup', 'id' );

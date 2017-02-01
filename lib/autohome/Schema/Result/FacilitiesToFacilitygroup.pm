@@ -32,11 +32,13 @@ __PACKAGE__->table("facilities_to_facilitygroup");
 =head2 facilitygroup_id
 
   data_type: 'integer'
+  default_value: -1
   is_nullable: 0
 
 =head2 facility_id
 
   data_type: 'integer'
+  default_value: -1
   is_nullable: 0
 
 =cut
@@ -45,9 +47,9 @@ __PACKAGE__->add_columns(
   "id",
   { data_type => "bigint", is_auto_increment => 1, is_nullable => 0 },
   "facilitygroup_id",
-  { data_type => "integer", is_nullable => 0 },
+  { data_type => "integer", default_value => -1, is_nullable => 0 },
   "facility_id",
-  { data_type => "integer", is_nullable => 0 },
+  { data_type => "integer", default_value => -1, is_nullable => 0 },
 );
 
 =head1 PRIMARY KEY
@@ -63,8 +65,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("id");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07039 @ 2014-12-21 23:59:52
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Xe0zknGQdoKgqNsfkVmPHA
+# Created by DBIx::Class::Schema::Loader v0.07039 @ 2017-02-02 10:57:18
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2QhJMUazPata3hmNBnnHaQ
 
 
 __PACKAGE__->set_primary_key(__PACKAGE__->columns);

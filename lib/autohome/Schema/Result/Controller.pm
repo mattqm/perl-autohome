@@ -50,7 +50,7 @@ __PACKAGE__->table("controllers");
 =head2 type
 
   data_type: 'enum'
-  extra: {list => ["arduino_serial","rpi_serial"]}
+  extra: {list => ["arduino_serial","rpi_serial","chip_direct"]}
   is_nullable: 0
 
 =head2 hostname
@@ -85,7 +85,7 @@ __PACKAGE__->add_columns(
   "type",
   {
     data_type => "enum",
-    extra => { list => ["arduino_serial", "rpi_serial"] },
+    extra => { list => ["arduino_serial", "rpi_serial", "chip_direct"] },
     is_nullable => 0,
   },
   "hostname",
@@ -109,8 +109,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("id");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07024 @ 2013-10-03 20:22:07
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:RWE1qUib5zhQki17jXFshg
+# Created by DBIx::Class::Schema::Loader v0.07039 @ 2017-02-02 10:57:18
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:oQMtyG7EWZCNsm5FEg74Pg
 
 
 __PACKAGE__->has_many( 'facility' => 'autohome::Schema::Result::Facility', { 'foreign.controller_id' => 'self.id' } );
