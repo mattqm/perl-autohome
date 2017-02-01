@@ -4,7 +4,7 @@ use Data::Dumper;
 #use Dancer2 appname => 'autohome';
 use Dancer2;
 use Dancer2::Plugin::Ajax;
-use Dancer2::Plugin::DBIC qw(schema resultset rset);
+use Dancer2::Plugin::DBIC;
 use autohome::Schema;
 use autohome::subs;
 

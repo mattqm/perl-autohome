@@ -1,6 +1,6 @@
 package autohome;
 use Dancer2;
-use Dancer2::Plugin::DBIC qw(schema resultset rset);
+use Dancer2::Plugin::DBIC;
 #use Dancer2::Plugin::Ajax;
 #use autohome::subs;
 #use autohome::API;
