@@ -9,6 +9,9 @@
     text-align: center;
 }
 
+.error .ui-btn:hover a:hover {
+    background: red !important;
+}
 .error {
     color: #FF0000;
     text-align: center;
