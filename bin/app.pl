@@ -8,7 +8,7 @@ use autohome::API;
 use Plack::Builder;
 
 builder {
-    mount '/'      => autohome->to_app;
+    mount '/'    => autohome->to_app;
     mount '/api' => autohome::API->to_app;
 };
 
