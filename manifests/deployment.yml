@@ -1,16 +1,19 @@
-apiVersion : apps/v1beta1
+apiVersion : apps/v1
 kind: Deployment
 metadata:
-  name: mattqmperlautohome 
+  name: mattqmperlautohome
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: mattqmperlautohome
   template:
     metadata:
       labels:
-        app: mattqmperlautohome 
+        app: mattqmperlautohome
     spec:
       containers:
-        - name: mattqmperlautohome 
+        - name: mattqmperlautohome
           image: qtech123.azurecr.io/mattqmperlautohome
           ports:
           - containerPort: 3001
