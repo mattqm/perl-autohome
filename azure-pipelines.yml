@@ -11,7 +11,7 @@ resources:
 variables:
 
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: '06b286ac-aa3c-44b4-bfb7-39390826e5f8'
+  dockerRegistryServiceConnection: 'qtech123'
   imageRepository: 'mattqmperlautohome'
   containerRegistry: 'qtech123.azurecr.io'
   dockerfilePath: '**/Dockerfile'
