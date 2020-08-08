@@ -1,4 +1,4 @@
-FROM alpine
+FROM qtech123.azurecr.io/dancer2
 ARG port=3001
 ARG workers=20
 ARG environment=development
