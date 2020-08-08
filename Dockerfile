@@ -1,4 +1,4 @@
-FROM dancer2
+FROM alpine
 ARG port=3001
 ARG workers=20
 ARG environment=development
