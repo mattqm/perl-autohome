@@ -11,10 +11,10 @@ auto_reload: 0
 plugins:
   DBIC:
     default:
-      dsn: dbi:mysql:autohome:dev011
+      dsn: dbi:mysql:autohome:devdb
       schema_class: autohome::Schema
       user: matt
-      password: nYBbSCQp9ajRTSWV
+      password: notusedyet
       options:
         RaiseError: 1
         PrintError: 1

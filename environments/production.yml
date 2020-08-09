@@ -10,10 +10,10 @@ route_cache: 1
 plugins:
   DBIC:
     default:
-      dsn: dbi:mysql:autohome:prd002.mallard.au
+      dsn: dbi:mysql:autohome:proddb
       schema_class: autohome::Schema
       user: matt
-      password: u95Vj8q8mtcjV54M
+      password: notusedyet
       options:
         RaiseError: 1
         PrintError: 1
